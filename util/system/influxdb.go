@@ -8,9 +8,10 @@ import (
 
 	"net/url"
 
+	"tino/util/config"
+
 	cc "github.com/influxdata/influxdb/client"
 	client "github.com/influxdata/influxdb/client/v2"
-	"roabay.com/util/config"
 )
 
 // Activity represents the operation that specific module performs

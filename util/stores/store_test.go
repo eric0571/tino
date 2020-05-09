@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"roabay.com/util/config"
+	"tino/util/config"
 )
 
 func testStore(t *testing.T, s Store) {

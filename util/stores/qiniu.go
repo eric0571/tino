@@ -6,8 +6,8 @@ import (
 	"io/ioutil"
 	"sort"
 
-	"roabay.com/util/config"
-	"roabay.com/util/system"
+	"tino/util/config"
+	"tino/util/system"
 
 	"qiniupkg.com/api.v7/conf"
 	"qiniupkg.com/api.v7/kodo"
