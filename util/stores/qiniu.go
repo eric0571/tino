@@ -6,8 +6,8 @@ import (
 	"io/ioutil"
 	"sort"
 
-	"tino/util/config"
-	"tino/util/system"
+	"github.com/eric0571/tino/util/config"
+	"github.com/eric0571/tino/util/system"
 
 	"qiniupkg.com/api.v7/conf"
 	"qiniupkg.com/api.v7/kodo"

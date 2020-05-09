@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"tino/util/config"
+	"github.com/eric0571/tino/util/config"
 )
 
 func testStore(t *testing.T, s Store) {

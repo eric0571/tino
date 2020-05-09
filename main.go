@@ -3,8 +3,8 @@ package main
 import (
 	"net/http"
 
-	"tino/util/config"
-	"tino/util/system"
+	"github.com/eric0571/tino/util/config"
+	"github.com/eric0571/tino/util/system"
 
 	"github.com/labstack/echo"
 )

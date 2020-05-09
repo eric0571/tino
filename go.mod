@@ -1,4 +1,4 @@
-module tino
+module github.com/eric0571/tino
 
 go 1.12
 

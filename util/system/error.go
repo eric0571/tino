@@ -3,7 +3,7 @@ package system
 import (
 	"fmt"
 
-	"tino/util/config"
+	"github.com/eric0571/tino/util/config"
 )
 
 type Error interface {

@@ -7,7 +7,7 @@ import (
 	"os"
 	"time"
 
-	"tino/util/config"
+	"github.com/eric0571/tino/util/config"
 
 	MQTT "github.com/eclipse/paho.mqtt.golang"
 )

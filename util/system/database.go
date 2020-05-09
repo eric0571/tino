@@ -5,7 +5,7 @@ import (
 	"log"
 	"time"
 
-	"tino/util/config"
+	"github.com/eric0571/tino/util/config"
 
 	_ "github.com/go-sql-driver/mysql"
 

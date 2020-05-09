@@ -8,7 +8,7 @@ import (
 
 	"net/url"
 
-	"tino/util/config"
+	"github.com/eric0571/tino/util/config"
 
 	cc "github.com/influxdata/influxdb/client"
 	client "github.com/influxdata/influxdb/client/v2"

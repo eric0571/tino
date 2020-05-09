@@ -7,7 +7,7 @@ import (
 	"encoding/base64"
 	"io"
 
-	"tino/util/config"
+	"github.com/eric0571/tino/util/config"
 )
 
 type AesEncrypt struct {
