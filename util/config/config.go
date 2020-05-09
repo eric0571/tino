@@ -90,3 +90,7 @@ func NewConfig(configFile string) *Config {
 
 	return config
 }
+
+func HelloWorld() {
+	fmt.Println("Hello World")
+}
