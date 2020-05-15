@@ -75,7 +75,7 @@ func Fetch(urls, method string, headers map[string]string, data []byte) ([]byte,
 }
 
 // HTTPSend ...
-func HTTPSend(url, data, method string, headers map[string]string) ([]byte, error) {
+func HTTPSend(url, data, method string, headers map[string]string, cookie map[string]string) ([]byte, error) {
 	client := &http.Client{}
 	req, err := http.NewRequest(method, url, strings.NewReader(data))
 	req.Header.Add("Accept", "*/*")
@@ -83,6 +83,10 @@ func HTTPSend(url, data, method string, headers map[string]string) ([]byte, erro
 
 	for k, v := range headers {
 		req.Header.Add(k, v)
+	}
+	for k, v := range cookie {
+		cookie1 := &http.Cookie{Name: k, Value: v, HttpOnly: true}
+		req.AddCookie(cookie1)
 	}
 
 	resp, err := client.Do(req)
@@ -100,34 +104,34 @@ func HTTPSend(url, data, method string, headers map[string]string) ([]byte, erro
 }
 
 // HTTPGet Get http
-func HTTPGet(url string, headers map[string]string) ([]byte, error) {
-	return HTTPSend(url, "", "GET", headers)
+func HTTPGet(url string, headers map[string]string, cookie map[string]string) ([]byte, error) {
+	return HTTPSend(url, "", "GET", headers, cookie)
 }
 
 // HTTPPost Post http
-func HTTPPost(url, data string, headers map[string]string) ([]byte, error) {
-	return HTTPSend(url, data, "POST", headers)
+func HTTPPost(url, data string, headers map[string]string, cookie map[string]string) ([]byte, error) {
+	return HTTPSend(url, data, "POST", headers, cookie)
 }
 
 // HTTPDelete Delete http
-func HTTPDelete(url string, headers map[string]string) ([]byte, error) {
-	return HTTPSend(url, "", "DELETE", headers)
+func HTTPDelete(url string, headers map[string]string, cookie map[string]string) ([]byte, error) {
+	return HTTPSend(url, "", "DELETE", headers, cookie)
 }
 
 // HTTPPatch Patch http
-func HTTPPatch(url, data string, headers map[string]string) ([]byte, error) {
-	return HTTPSend(url, data, "PATCH", headers)
+func HTTPPatch(url, data string, headers map[string]string, cookie map[string]string) ([]byte, error) {
+	return HTTPSend(url, data, "PATCH", headers, cookie)
 }
 
 // HTTPGetJSON 得到 JSON 数据
-func HTTPGetJSON(url string, headers map[string]string) (interface{}, error) {
+func HTTPGetJSON(url string, headers map[string]string, cookie map[string]string) (interface{}, error) {
 	var (
 		jsonData interface{}
 		err      error
 		body     []byte
 	)
 
-	if body, err = HTTPGet(url, headers); err == nil {
+	if body, err = HTTPGet(url, headers, cookie); err == nil {
 		err = json.Unmarshal(body, &jsonData)
 	}
 
@@ -135,14 +139,14 @@ func HTTPGetJSON(url string, headers map[string]string) (interface{}, error) {
 }
 
 // HTTPPostJSON 得到 JSON 数据
-func HTTPPostJSON(url, data string, headers map[string]string) (interface{}, error) {
+func HTTPPostJSON(url, data string, headers map[string]string, cookie map[string]string) (interface{}, error) {
 	var (
 		jsonData interface{}
 		err      error
 		body     []byte
 	)
 
-	if body, err = HTTPPost(url, data, headers); err == nil {
+	if body, err = HTTPPost(url, data, headers, cookie); err == nil {
 		err = json.Unmarshal(body, &jsonData)
 	}
 
@@ -150,14 +154,14 @@ func HTTPPostJSON(url, data string, headers map[string]string) (interface{}, err
 }
 
 // HTTPPatchJSON 得到 JSON 数据
-func HTTPPatchJSON(url, data string, headers map[string]string) (interface{}, error) {
+func HTTPPatchJSON(url, data string, headers map[string]string, cookie map[string]string) (interface{}, error) {
 	var (
 		jsonData interface{}
 		err      error
 		body     []byte
 	)
 
-	if body, err = HTTPPatch(url, data, headers); err == nil {
+	if body, err = HTTPPatch(url, data, headers, cookie); err == nil {
 		err = json.Unmarshal(body, &jsonData)
 	}
 
@@ -165,14 +169,14 @@ func HTTPPatchJSON(url, data string, headers map[string]string) (interface{}, er
 }
 
 // HTTPDeleteJSON 得到 JSON 数据
-func HTTPDeleteJSON(url string, headers map[string]string) (interface{}, error) {
+func HTTPDeleteJSON(url string, headers map[string]string, cookie map[string]string) (interface{}, error) {
 	var (
 		jsonData interface{}
 		err      error
 		body     []byte
 	)
 
-	if body, err = HTTPDelete(url, headers); err == nil {
+	if body, err = HTTPDelete(url, headers, cookie); err == nil {
 		err = json.Unmarshal(body, &jsonData)
 	}
 
@@ -224,7 +228,7 @@ func TaobaoGet(url string) ([]byte, error) {
 		"Referer":         "https://h5.m.taobao.com/app/detail/desc.html?isH5Des=true",
 		"User-Agent":      "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Mobile Safari/537.36",
 	}
-	return HTTPSend(url, "", "GET", headers)
+	return HTTPSend(url, "", "GET", headers, nil)
 }
 
 // TaobaoGetJSON 淘宝上的得到数据
@@ -235,6 +239,5 @@ func TaobaoGetJSON(url string) (jsonData map[string]interface{}, err error) {
 			return nil, err
 		}
 	}
-
 	return
 }
