@@ -10,6 +10,9 @@ import (
 	"github.com/labstack/echo"
 )
 
+const Host string = "http://api-front.v2.shunliandev.com"
+const sendSms string = "/member/common/sendSmsCode?_v=3.1.1"
+
 func UpdatePlayTiming() {
 	host := "https://api.shunliandongli.com/v2/admin/"
 	url := host + "live/liveList?key=&type=&value=&is_rec=&role_id=&page=1&page_size=10&total=&sort_value="
@@ -36,8 +39,28 @@ func UpdatePlayTiming() {
 	}
 }
 
+func Login() {
+	TestHeader := map[string]string{}
+	TestCookie := map[string]string{}
+	url := Host + sendSms
+	TestHeader["UserNameAgent"] = "kkkkkkk"
+	TestCookie["hashToken"] = "d97bd856617a057ee075377ba258bc14"
+	sendDataJSON := `{"mobile":"13588151390","msg":"hello."}`
+	system.JSONPrint("SendDataJson:", sendDataJSON)
+	//JsonPrint("SendDataJson:", sendDataJSON)
+	//data := "&mobile=13588151392"
+	//fmt.Println("Url:", url)
+	ret, _ := system.HTTPPostJSON(url, sendDataJSON, TestHeader, TestCookie)
+	system.PrintInterface(ret)
+	// data1 := ret.(map[string]interface{})
+	// data := data1["data"].(map[string]interface{})
+	// code := data["code"].(string)
+	// fmt.Println("code:", code)
+}
+
 func main() {
-	UpdatePlayTiming()
+	Login()
+	// UpdatePlayTiming()
 	e := echo.New()
 	e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello, World!")

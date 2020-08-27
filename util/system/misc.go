@@ -11,6 +11,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -422,4 +423,57 @@ func CheckError(e error) {
 	if e != nil {
 		log.Fatal(e)
 	}
+}
+
+func GetUint64(num string) uint64 {
+	n, err := strconv.ParseUint(num, 10, 64)
+	if err == nil {
+		return n
+	}
+	return 0
+}
+
+func GetInt64(num string) int64 {
+	n, err := strconv.ParseInt(num, 10, 64)
+	if err == nil {
+		return n
+	}
+	return 0
+}
+
+func GetUint32(num string) uint32 {
+	n, err := strconv.ParseUint(num, 10, 32)
+	if err == nil {
+		return uint32(n)
+	}
+	return 0
+}
+
+func GetInt32(num string) int32 {
+	n, err := strconv.ParseInt(num, 10, 32)
+	if err == nil {
+		return int32(n)
+	}
+	return 0
+}
+
+func GetInt(num string) int {
+	n, err := strconv.Atoi(num)
+	if err == nil {
+		return n
+	}
+	return 0
+}
+
+/**
+以sep分割字符串放入数组中
+*/
+func Split(strValue, sep string) []string {
+	arr := strings.Split(strValue, sep)
+	return arr
+}
+
+func IsNum(s string) bool {
+	_, err := strconv.ParseFloat(s, 64)
+	return err == nil
 }
