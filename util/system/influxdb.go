@@ -1,17 +1,8 @@
 package system
 
 import (
-	"fmt"
-
-	"log"
-	"time"
-
-	"net/url"
-
 	"github.com/eric0571/tino/util/config"
-
-	cc "github.com/influxdata/influxdb/client"
-	client "github.com/influxdata/influxdb/client/v2"
+	//client "github.com/influxdata/influxdb/client/v2"
 )
 
 // Activity represents the operation that specific module performs
@@ -35,6 +26,7 @@ type Hook struct {
 	chData       chan DataNode
 }
 
+/*
 // NewInfluxDBHook generate a new InfluxDB hook based on the given configuration
 func NewInfluxDBHook() (*Hook, error) {
 	hook := &Hook{
@@ -201,3 +193,4 @@ func (hook *Hook) QueryNode() {
 		log.Println(response.Results)
 	}
 }
+*/
