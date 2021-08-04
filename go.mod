@@ -19,6 +19,7 @@ require (
 	github.com/labstack/gommon v0.3.0 // indirect
 	github.com/sirupsen/logrus v1.6.0
 	github.com/spf13/cast v1.3.1
+	github.com/stretchr/testify v1.4.0
 	github.com/tealeg/xlsx v1.0.5
 	golang.org/x/crypto v0.0.0-20200429183012-4b2356b1ed79
 	gopkg.in/mgo.v2 v2.0.0-20190816093944-a6b53ec6cb22

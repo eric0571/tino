@@ -127,6 +127,12 @@ func StructToString(v interface{}) string {
 	}
 }
 
+//未知道对象转map
+func StructToMap(m interface{}) (s map[string]interface{}, err error) {
+	strJson := StructToString(m)
+	return JSON2Map(strJson)
+}
+
 //截取字符串末几位
 func SubRightstr(str string, length int) string {
 	n := len(str)

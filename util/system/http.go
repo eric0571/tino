@@ -15,6 +15,40 @@ func HTTPSPost(url, data, token string) ([]byte, error) {
 	return HTTPSSend(url, data, token, "POST")
 }
 
+func HTTPSendEx(url, data, method string, headers map[string]string, cookie map[string]string) ([]byte, error) {
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	client := &http.Client{Transport: tr}
+	req, err := http.NewRequest(method, url, strings.NewReader(data))
+	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("Accept", "*/*")
+	req.Header.Add("Connection", "Keep-Alive")
+	req.Header.Add("User-Agent", "Golang https client")
+	req.Header.Add("Cache-control", "no-cache")
+	req.Header.Set("Accept-Charset", "utf-8")
+	req.Header.Set("Accept-Encoding", "gzip,deflate,br")
+	for k, v := range headers {
+		req.Header.Add(k, v)
+	}
+	for k, v := range cookie {
+		cookie1 := &http.Cookie{Name: k, Value: v, HttpOnly: true}
+		req.AddCookie(cookie1)
+	}
+
+	resp, err := client.Do(req)
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode == http.StatusOK || resp.StatusCode == http.StatusNotModified || resp.StatusCode == http.StatusNotFound {
+		return ioutil.ReadAll(resp.Body)
+	}
+
+	return nil, fmt.Errorf("https error, %d: %s, %s", resp.StatusCode, http.StatusText(resp.StatusCode), url)
+}
+
 func HTTPSSend(url, data, token, method string) ([]byte, error) {
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
