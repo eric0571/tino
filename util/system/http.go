@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"mime/multipart"
 	"net/http"
 	"net/url"
 	"strings"
@@ -132,6 +133,42 @@ func HTTPSend(url, data, method string, headers map[string]string, cookie map[st
 		return nil, err
 	}
 
+	defer resp.Body.Close()
+
+	if resp.StatusCode == http.StatusOK || resp.StatusCode == http.StatusCreated || resp.StatusCode == http.StatusNotModified || resp.StatusCode == http.StatusNotFound {
+		return ioutil.ReadAll(resp.Body)
+	}
+
+	return nil, fmt.Errorf("http error, %d: %s", resp.StatusCode, http.StatusText(resp.StatusCode))
+}
+
+func HTTPPostMulForm(url string, data, headers, cookie map[string]string) ([]byte, error) {
+	body := &bytes.Buffer{}
+	writer := multipart.NewWriter(body)
+	for k, v := range data {
+		writer.WriteField(k, v)
+	}
+	err := writer.Close()
+	if err != nil {
+		fmt.Println(err)
+	}
+	client := &http.Client{}
+	req, err := http.NewRequest("POST", url, body)
+	req.Header.Add("Accept", "*/*")
+	req.Header.Add("Content-Type", writer.FormDataContentType())
+
+	for k, v := range headers {
+		req.Header.Add(k, v)
+	}
+	for k, v := range cookie {
+		cookie1 := &http.Cookie{Name: k, Value: v, HttpOnly: true}
+		req.AddCookie(cookie1)
+	}
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode == http.StatusOK || resp.StatusCode == http.StatusCreated || resp.StatusCode == http.StatusNotModified || resp.StatusCode == http.StatusNotFound {

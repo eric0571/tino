@@ -2,12 +2,8 @@ package main
 
 import (
 	"fmt"
-	"net/http"
 
-	"github.com/eric0571/tino/util/config"
 	"github.com/eric0571/tino/util/system"
-
-	"github.com/labstack/echo"
 )
 
 const Host string = "http://api-front.v2.shunliandev.com"
@@ -19,9 +15,10 @@ func UpdatePlayTiming() {
 	headers := map[string]string{}
 	cookie := map[string]string{}
 	cookie["hashToken"] = "d97bd856617a057ee075377ba258bc14"
+	fmt.Println(url)
 	ret, _ := system.HTTPPostJSON(url, string(""), headers, cookie)
-	//fmt.Println("Query Result:", ret)
-	//system.PrintInterface(ret)
+	fmt.Println("Query Result:", ret)
+	system.PrintInterface(ret)
 	data1 := ret.(map[string]interface{})
 	data := data1["data"].(map[string]interface{})
 	list := data["list"].([]interface{})
@@ -58,14 +55,33 @@ func Login() {
 	// fmt.Println("code:", code)
 }
 
+func PostData() {
+	Header := map[string]string{}
+	Cookie := map[string]string{}
+	Data := map[string]string{}
+	url := "http://api.zko.shunliandev.com/customs/setPlatOrder"
+	Data["UserNameAgent"] = "TestAngent"
+	Data["id"] = "2"
+	Data["push_time"] = fmt.Sprintf("%d", system.GetTimeInt())
+	Cookie["hashToken"] = "d97bd856617a057ee075377ba258bc14"
+
+	fmt.Println("Url:", url)
+	fmt.Println("Data:")
+	system.MapPrint(Data)
+	ret, _ := system.HTTPPostMulForm(url, Data, Header, Cookie)
+	fmt.Println("Return ret is :")
+	fmt.Println(string(ret))
+}
+
 func main() {
-	Login()
-	// UpdatePlayTiming()
-	e := echo.New()
-	e.GET("/", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hello, World!")
-	})
-	system.JSONPrint("Ts", "22")
-	config.HelloWorld()
+	PostData()
+	//Login()
+	//UpdatePlayTiming()
+	// e := echo.New()
+	// e.GET("/", func(c echo.Context) error {
+	// 	return c.String(http.StatusOK, "Hello, World!")
+	// })
+	//system.JSONPrint("Ts", "22")
+	//config.HelloWorld()
 	//e.Logger.Fatal(e.Start(":1323"))
 }
