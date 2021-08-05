@@ -16,6 +16,10 @@ func HTTPSPost(url, data, token string) ([]byte, error) {
 }
 
 func HTTPSendEx(url, data, method string, headers map[string]string, cookie map[string]string) ([]byte, error) {
+	return HTTPSSendEx(url, data, method, headers, cookie)
+}
+
+func HTTPSSendEx(url, data, method string, headers map[string]string, cookie map[string]string) ([]byte, error) {
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 	}
