@@ -73,8 +73,28 @@ func PostData() {
 	fmt.Println(string(ret))
 }
 
+func PostWwwFromData() {
+	Header := map[string]string{}
+	Cookie := map[string]string{}
+	Data := map[string]string{}
+	url := "http://api.zko.shunliandev.com/customs/setPlatOrder"
+	Data["UserNameAgent"] = "TestAngent"
+	Data["id"] = "2"
+	Data["jasonData"] = `{"name":"wanglinhui","sex":"m","age":40}`
+	Data["push_time"] = fmt.Sprintf("%d", system.GetTimeInt())
+	Cookie["hashToken"] = "d97bd856617a057ee075377ba258bc14"
+
+	fmt.Println("Url:", url)
+	fmt.Println("Data:")
+	system.MapPrint(Data)
+	ret, _ := system.HTTPPostWForm(url, Data, Header, Cookie)
+	fmt.Println("Return ret is :")
+	fmt.Println(string(ret))
+}
+
 func main() {
-	PostData()
+	// PostData()
+	PostWwwFromData()
 	//Login()
 	//UpdatePlayTiming()
 	// e := echo.New()

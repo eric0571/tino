@@ -142,6 +142,40 @@ func HTTPSend(url, data, method string, headers map[string]string, cookie map[st
 	return nil, fmt.Errorf("http error, %d: %s", resp.StatusCode, http.StatusText(resp.StatusCode))
 }
 
+func HTTPPostWForm(url string, data, headers, cookie map[string]string) ([]byte, error) {
+	var r http.Request
+	r.ParseForm()
+	for k, v := range data {
+		r.Form.Add(k, v)
+	}
+	bodystr := strings.TrimSpace(r.Form.Encode())
+	req, err := http.NewRequest("POST", url, strings.NewReader(bodystr))
+	client := &http.Client{}
+	req.Header.Add("Accept", "*/*")
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	req.Header.Set("Connection", "Keep-Alive")
+
+	for k, v := range headers {
+		req.Header.Add(k, v)
+	}
+	for k, v := range cookie {
+		cookie1 := &http.Cookie{Name: k, Value: v, HttpOnly: true}
+		req.AddCookie(cookie1)
+	}
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode == http.StatusOK || resp.StatusCode == http.StatusCreated || resp.StatusCode == http.StatusNotModified || resp.StatusCode == http.StatusNotFound {
+		return ioutil.ReadAll(resp.Body)
+	}
+
+	return nil, fmt.Errorf("http error, %d: %s", resp.StatusCode, http.StatusText(resp.StatusCode))
+}
+
 func HTTPPostMulForm(url string, data, headers, cookie map[string]string) ([]byte, error) {
 	body := &bytes.Buffer{}
 	writer := multipart.NewWriter(body)
